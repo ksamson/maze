@@ -1,77 +1,53 @@
+# A recursive backtracker implementation of the maze-generation algorithm
+
+from grid import Grid
 from PIL import Image, ImageDraw
 
-
-# height and size of the image in pixels
-imgx = 500; imgy = 500
-
-# size of a cell block
-csize = 50
-
-# Iterates over an image, generating a cell and appending it to a list. Returns the list
-def generate_cells():
-    cells = []
-    rows = imgx // csize
-    cols = imgy // csize
-    for x in range(rows):
-        for y in range(cols):
-            cells.append(Cell(x,y))
-
-    return cells
-
-
-def draw_grid(grid):
-
-    image = Image.new("RGB", (imgx, imgy), (255,255,255))
-    # Draw the image
-    draw = ImageDraw.Draw(image)
-    #draw.rectangle((0,0,imgx, imgy), fill="black")
-
-	#draw.line((0,0), (50,50))
-    
-    
-    for cell in grid:
-        # cell arithmetics below:
-        # x : row, y : col
-        #
-        # (x,y)        (x+1, y)
-        #     o--------o
-        #     |        |
-        #     |  Cell  |
-        #     |        |
-        #     o--------o
-        # (x,y+1)      (x+1, y+1)
-
-        x1 = cell.x * csize
-        y1 = cell.y * csize
-        x2 = (cell.x + 1) * csize
-        y2 = (cell.y + 1) * csize
-
-        # top line
-        if cell.walls[0]:
-            draw.line((x1, y1, x2, y1), (0,250,0))
-        # right line
-        if cell.walls[1]:
-            draw.line((x2, y1, x2, y2), (0,250,0))
-        # bottom line
-        if cell.walls[2]:
-            draw.line((x2, y2, x1, y2), (250,0,0))
-        # left line
-        if cell.walls[3]:
-            draw.line((x1, y2, x1, y1), (0,0, 250))
-
-    image.save("test.PNG", "PNG")
-
 def main():
-    grid = generate_cells()
-    draw_grid(grid)
+	# Creates a grid object with row x col cell objects
+	g = Grid(3,3, cell_size=50)
+	g.draw_grid()
+	_test(g.grid)
 
-class Cell():
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        # A boolean list which checks if a cell has a 'wall' around them
-        # walls = [Top wall, Right wall, Bottom wall, Left wall]
-        self.walls = [False, False, True, False]
+	# Pseudocode : https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_backtracker
+	# stack = []
+	# initial_cell = g[0] 
+	# stack.append(initial_cell)
+
+	# while len(stack) != 0:
+	# 	current_cell = stack.pop()
+	# 	# Step 1: Push the current cell to the stack (if there are unvisited neighbors)
+	# 	if current_cell.check_neighbors() == True:
+	# 		stack.append(current_cell)
+
+	# 		# Step 2: Choose one of the unvisited neighbors
+	#		# TODO: Implement below function
+	# 		unvisited_neighbor_cell = current_cell.get_unvisited_neighbor()
+			
+	#  		# Step 3: Remove the wall between the current and chosen cell
+	#		# TODO: Implement below function
+	#  		# current_cell.remove_wall(unvisited_neighbor_cell)
+			
+	# 		# Step 4: Mark the chosen cell as visited and push it into the stack
+	# 		un.visited = True
+	# 		stack.append(un)
+
+# TODO: create a unit test
+def _test(grid):
+	first_cell = grid[0]
+	second_cell = grid[1]
+	for i in range(len(grid)):
+		print(i, grid[i])
+
+	print("========================")
+	print(first_cell)
+	print(second_cell)
+	print("========================")
+	print("first cell's right neighbor should be (0,1):", first_cell.right)
+	print("second cell's right neighbor should be (0,2): ",second_cell.right)
+	print("========================")
+	print("first cell's right neighbor should be equal to second_cell:", first_cell.right == second_cell)
+	print("second cell's left neighbor should be equal to first_cell:", first_cell.right == second_cell)
 
 if __name__ == "__main__":
-    main()
+	main()
