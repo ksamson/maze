@@ -35,24 +35,24 @@ class Cell():
 
     def remove_wall(self, neighbor_cell):
         # current cell's top neighbor
-        if self.x - neighbor_cell.x == 1:
-            self.walls[0] = False
-            neighbor_cell.walls[2] = False
+        if self.x - neighbor_cell.x == -1:
+            self.walls[1] = False
+            neighbor_cell.walls[3] = False            
         
         # current cell's bottom neighbor
-        elif self.x - neighbor_cell.x == -1:
-            self.walls[2] = False
-            neighbor_cell.walls[0] = False
-
-        # current cell's right neighbor
-        if self.y - neighbor_cell.y == -1:
-            self.walls[1] = False
-            neighbor_cell.walls[3] = False
-        
-        # current cell's left neighbor
-        elif self.y - neighbor_cell.y == 1:
+        elif self.x - neighbor_cell.x == 1:
             self.walls[3] = False
             neighbor_cell.walls[1] = False
+
+        # current cell's right neighbor
+        if self.y - neighbor_cell.y == 1:
+            self.walls[0] = False
+            neighbor_cell.walls[2] = False
+
+        # current cell's left neighbor
+        elif self.y - neighbor_cell.y == -1:
+            self.walls[2] = False
+            neighbor_cell.walls[0] = False
 
     # show the cell
     def show(self, draw, image_offset=20):
@@ -87,4 +87,3 @@ class Cell():
         # left line
         if self.walls[3]:
             draw.line((x1, y2, x1, y1), (0,0,250))
-
