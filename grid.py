@@ -9,8 +9,10 @@ class Grid():
         self.image_offset = image_offset
         self.grid = self.prepare_grid()
 
+    # TODO
     def __str__(self):
         pass
+
 
     # Prepares the grid which contains row*col number of cells
     # the grid is a list which contains the cells
@@ -19,14 +21,13 @@ class Grid():
         for x in range(self.row):
             for y in range(self.col):
                 grid.append(Cell(x,y,self.cell_size))
-
         self._set_neighbors(grid)
-
         return grid
 
 
     def _get_index(self, x, y):
         return y + (x * self.col)
+
 
     # Helper function which pre-sets the neighbors of each created cell in the grid
     def _set_neighbors(self, grid):
@@ -39,27 +40,21 @@ class Grid():
 
     # Helper function which checks if the passed index is a valid index (out of bounds checking)
     def _valid_index(self, x, y):
-        if (x < 0 or y < 0 or x > self.row - 1 or y > self.col - 1):
-            return False
-        return True
+        return False if (x < 0 or y < 0 or x > self.row - 1 or y > self.col - 1) else True
 
 
-    def draw_grid(self):
-        x = self.row * self.cell_size + self.image_offset
-        y = self.col * self.cell_size + self.image_offset 
-        image = Image.new("RGB", (x,y), (255,255,255))
+    def draw_grid(self, frame=str(0)):
+        x = self.row * self.cell_size
+        y = self.col * self.cell_size
+
+        image = Image.new("RGB", (x + 2 * self.image_offset, y + 2 * self.image_offset), (255,255,255))
 
         # Creates a draw object which can be drawed on
         draw = ImageDraw.Draw(image)
-        #draw.rectangle((0,0,imgx, imgy), fill="black")
-
-        # TODO:
-        # Set the starting point to the first cell in the grid
-        self.grid[0].visited = True
-        # self.grid[-1].visited = True
+        # draw.rectangle((0,0,imgx, imgy), fill="black")
 
         for cell in self.grid:
-            cell.show(draw)
+            cell.show(draw, self.image_offset)
 
-        image.save("grid.PNG", "PNG")
-        
+        #image.save("grid.PNG", "PNG")
+        image.save("./exports/maze"+frame+".png", "PNG")
