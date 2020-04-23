@@ -8,7 +8,7 @@ import os
 
 def main():
 	# Creates a grid object with row x col cell objects
-	g = Grid(10,10, cell_size=100)
+	g = Grid(10,10, cell_size=50)
 	frame = 0
 	filenames = []
 	#_test(g.grid)
@@ -21,16 +21,16 @@ def main():
 
 	while len(stack) != 0:
 		current_cell = stack.pop()
-
 		neighbors = current_cell.get_unvisited_neighbor()
 
 		# Step 1: Push the current cell to the stack (if there are unvisited neighbors)
 		if neighbors:
 			stack.append(current_cell)
 
+
 			# Step 2: Choose one of the unvisited neighbors
 			unvisited_neighbor_cell = random.choice(neighbors)
-			
+			unvisited_neighbor_cell.current = True
 	 		# Step 3: Remove the wall between the current and chosen cell
 			current_cell.remove_wall(unvisited_neighbor_cell)
 			
@@ -42,7 +42,8 @@ def main():
 			frame += 1
 			g.draw_grid(str(frame))
 			filenames.append("./exports/maze"+str(frame)+".png")
-	
+			unvisited_neighbor_cell.current = False
+
 	create_gif(filenames, 'recursive_backtracker.gif', 5)
 	g.draw_grid()
 
@@ -54,7 +55,7 @@ def create_gif(filenames, moviename, fps=10):
     imageio.mimsave('./exports/' + moviename, frames, fps=fps)
     # Clean up directory
     for filename in filenames:
-        os.remove(filename)
+    	os.remove(filename)
 
 # TODO: create a unit test
 def _test(grid):

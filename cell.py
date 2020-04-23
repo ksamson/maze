@@ -10,6 +10,7 @@ class Cell():
         # walls = [Top wall, Right wall, Bottom wall, Left wall]
         self.walls = [True, True, True, True]
         self.visited = False
+        self.current = False
 
     def __str__(self):
         return "Cell Object with coordinate ({},{})".format(self.x, self.y)
@@ -74,6 +75,8 @@ class Cell():
 
         if self.visited:
             draw.rectangle((x1,y1,x2,y2), fill=(240,240,20,10))
+        if self.current:
+            draw.rectangle((x1,y1,x2,y2), fill=(50,240,50,10))
 
         # top line
         if self.walls[0]:
@@ -87,3 +90,5 @@ class Cell():
         # left line
         if self.walls[3]:
             draw.line((x1, y2, x1, y1), (0,0,250))
+
+        
